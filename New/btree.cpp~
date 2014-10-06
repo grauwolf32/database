@@ -194,7 +194,7 @@ int insert_nonfull(BTreeNode* x,char* key,struct DB* db)
 			split_child(x,i,db);
 			if(keys_compare(x,key,i) > 0)i++;
 		}
-		insert_nonfull(&c_i,key,db);			
+		insert_nonfull(c_i,key,db);			
 	}
 }
 
