@@ -11,16 +11,22 @@ struct DB *dbcreate(const char *file, const struct DBC conf)
  struct DB* new_base = (struct DB*)malloc(sizeof(struct DB));	
  new_base->fd = NULL;
  new_base->fd = fopen(file,"wb+");
+
  if(new_base->fd == NULL)
 	printf("Error! File wasn't created!\n");
+
  new_base->head = (struct BTreeNode*)malloc(sizeof(struct BTreeNode));
  memset(new_base->head,0,sizeof(new_base->head));
+
  fprintf(new_base->fd,"%d%d%d%d",BTREE_KEY_CNT,BTREE_KEY_LEN,BTREE_VAL_LEN,BTREE_CHLD_CNT);
  fprintf(new_base->fd,"%d%d",(int)conf.db_size,(int)conf.chunk_size);
+ 
  int offset = ftell(new_base->fd); //Узнаем текущее смещение
  fprintf(new_base->fd,"%d",(int)(offset + sizeof(offset)) );//Пишем смещение главного листа B-дерева
  fwrite(new_base->head,1,sizeof(new_base->head),new_base->fd);
+
  head_offset = offset + sizeof(offset);
+ 
  return new_base;
 }
 
